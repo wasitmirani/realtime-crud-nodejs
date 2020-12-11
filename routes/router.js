@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const user = require("../model/User");
+const UserModel = require("../model/User");
 
 // middleware specific to this router
 router.use(function timeLog(req, res, next) {
@@ -10,8 +10,19 @@ router.use(function timeLog(req, res, next) {
 
 // define the home page route
 router.get('/', function(req, res) {
-    res.send(user.getUsers());
+    getAllUsers = async(req, res, next) => {
+        let userList = await UserModel.find();
+        if (!userList.length) {
+            throw new HttpException(404, 'Users not found');
+        }
+        console.log("hello", userList)
+        res.send(userList);
+    };
+
+    return res.send(getAllUsers());
+
 });
+
 
 // define the about route
 router.get('/about', function(req, res) {
