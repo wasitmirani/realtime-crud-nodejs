@@ -1,4 +1,5 @@
 var express = require('express');
+const url = require('url');
 var router = express.Router();
 const UserModel = require("../model/User");
 
@@ -9,19 +10,25 @@ router.use(function timeLog(req, res, next) {
 });
 
 // define the home page route
-router.get('/', function(req, res) {
+router.get('/', function(request, response) {
+    const queryObject = url.parse(request.url,true).query;
+    const id=queryObject.id;
+    console.log('length: ',queryObject.length);
     getAllUsers = async(req, res, next) => {
-        let userList = await UserModel.find();
-        if (!userList.length) {
-            throw new HttpException(404, 'Users not found');
+        let users  = !id  ? ( await UserModel.all()) : (await UserModel.find(1));
+      
+        if (!users.length) {
+            return response.json({message:'Users not found'})
         }
-        console.log("hello", userList)
-        res.send(userList);
+     
+        return response.json(users);
     };
-
-    return res.send(getAllUsers());
+    
+   return getAllUsers();
+ 
 
 });
+
 
 
 // define the about route

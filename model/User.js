@@ -4,17 +4,15 @@ const query = require('../controller/db_connection');
 
 class UserModel {
 
-    find = async() => {
-        let sql = `SELECT * FROM users`;
+    all = async () => {
+        const sql_query = `SELECT * FROM users`;
 
-        // if (!Object.keys(params).length) {
-        //     return await query(sql);
-        // }
-
-        // const { columnSet, values } = multipleColumnSet(params)
-        // sql += ` WHERE ${columnSet}`;
-
-        return await query(sql);
+        return await query(sql_query);
+    }
+    find= async (id)=>{
+        const sql_query=`SELECT * FROM users where id=${id}`;
+   
+        return await query(sql_query);
     }
 
 }

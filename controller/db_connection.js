@@ -40,7 +40,7 @@ class DBConnection {
                     resolve(result);
                 }
                 // execute will internally call prepare and query
-            this.db.execute(sql, values, callback);
+            this.db.query(sql, values, callback);
         }).catch(err => {
             // const mysqlErrorList = Object.keys(HttpStatusCodes);
             // // convert mysql errors which in the mysqlErrorList list to http status code
